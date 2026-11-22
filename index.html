@@ -48,6 +48,7 @@
       position: sticky;
       top: 0;
       z-index: 20;
+      min-height: 58px;
       background: rgba(250, 248, 244, 0.94);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
@@ -57,6 +58,12 @@
       justify-content: space-between;
       gap: 14px;
       flex-wrap: wrap;
+    }
+    .header-divider {
+      width: 1px;
+      height: 18px;
+      background: var(--border-strong);
+      flex-shrink: 0;
     }
     .brand {
       display: flex;
@@ -432,20 +439,21 @@
       position: sticky;
       top: 0;
       z-index: 20;
-      background: rgba(250, 248, 244, 0.95);
+      min-height: 58px;
+      background: rgba(250, 248, 244, 0.94);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      padding: 10px 28px;
+      padding: 12px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 10px;
+      gap: 14px;
       flex-wrap: wrap;
     }
     .detail-bar-left, .detail-bar-right {
       display: flex;
       align-items: center;
-      gap: 8px;
+      gap: 10px;
       flex-wrap: wrap;
     }
 
@@ -916,8 +924,11 @@
     <section class="detail-view" id="detail-view">
       <div class="detail-bar">
         <div class="detail-bar-left">
+          <div class="brand" id="detail-brand-home" title="一覧へ戻る">
+            <span class="brand-title">Recipe Shelf</span>
+          </div>
+          <span class="header-divider"></span>
           <button type="button" class="btn" id="btn-back">← 一覧へ</button>
-          <span id="bar-title" style="font-size:13px;font-weight:600;"></span>
         </div>
         <div class="detail-bar-right">
           <button type="button" class="btn btn-fav" id="btn-detail-fav">☆ お気に入り</button>
@@ -1474,7 +1485,6 @@
       detailView.classList.add('open');
       updateUrlRecipe(currentRecipe.id);
 
-      document.getElementById('bar-title').textContent = currentRecipe.title;
       document.getElementById('hero-cat').textContent = currentRecipe.category || 'レシピ';
       document.getElementById('hero-time').textContent = currentRecipe.timeMin ? ('調理時間 ' + currentRecipe.timeMin + '分') : '';
       document.getElementById('hero-diff').textContent = currentRecipe.difficulty ? ('難易度 ' + currentRecipe.difficulty) : '';
@@ -1526,6 +1536,7 @@
     });
 
     document.getElementById('btn-back').addEventListener('click', closeDetail);
+    document.getElementById('detail-brand-home').addEventListener('click', closeDetail);
 
     document.getElementById('btn-detail-fav').addEventListener('click', () => {
       if (!currentRecipe) return;
