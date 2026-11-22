@@ -1,0 +1,1170 @@
+<!DOCTYPE html>
+<html lang="ja">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Recipe Shelf</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&family=Noto+Sans+JP:wght@400;500;600;700&family=Shippori+Mincho:wght@500;600;700&display=swap" rel="stylesheet" />
+  <style>
+    :root {
+      --bg: #faf8f4;
+      --surface: #ffffff;
+      --surface-warm: #f4efe7;
+      --border: #e5dfd5;
+      --border-strong: #cfc7ba;
+      --text: #1c1917;
+      --text-sub: #57534e;
+      --text-muted: #78716c;
+      --accent: #3f523a;
+      --accent-fg: #ffffff;
+      --terracotta: #a64b2a;
+      --font-serif: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
+      --font-sans: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
+    }
+
+    * { box-sizing: border-box; }
+    html, body {
+      margin: 0;
+      padding: 0;
+      background: var(--bg);
+      color: var(--text);
+      font-family: var(--font-sans);
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.65;
+      overflow-x: hidden;
+    }
+
+    .app {
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+    }
+
+    /* Header */
+    .shelf-header {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(250, 248, 244, 0.94);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 14px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 16px;
+      flex-wrap: wrap;
+    }
+    .brand {
+      display: flex;
+      align-items: baseline;
+      gap: 12px;
+    }
+    .brand-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 20px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .brand-count {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+    .controls {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+    .tabs {
+      display: inline-flex;
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 2px;
+      gap: 2px;
+    }
+    .tab-btn {
+      border: 0;
+      background: transparent;
+      color: var(--text-sub);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 4px 11px;
+      border-radius: 4px;
+      cursor: pointer;
+      transition: background 0.14s, color 0.14s;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active {
+      background: var(--surface);
+      color: var(--text);
+      box-shadow: 0 1px 2px rgba(0, 0, 0, 0.05);
+    }
+    .search-input {
+      width: 210px;
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12.5px;
+      padding: 6px 11px;
+      border-radius: 6px;
+      outline: none;
+    }
+    .search-input:focus { border-color: var(--accent); }
+
+    .btn {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 500;
+      padding: 5px 12px;
+      border-radius: 6px;
+      cursor: pointer;
+      white-space: nowrap;
+      transition: background 0.14s, border-color 0.14s;
+    }
+    .btn:hover { background: var(--surface-warm); border-color: var(--border-strong); }
+    .btn-accent {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-color: var(--accent);
+    }
+    .btn-accent:hover { opacity: 0.92; background: var(--accent); }
+
+    /* Shelf Grid */
+    .shelf-main {
+      max-width: 1120px;
+      width: 100%;
+      margin: 0 auto;
+      padding: 28px;
+      flex: 1;
+    }
+    .shelf-main.hidden { display: none; }
+    .recipe-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+      gap: 20px;
+    }
+    .recipe-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      display: flex;
+      flex-direction: column;
+      transition: border-color 0.16s, transform 0.16s;
+    }
+    .recipe-card:hover {
+      border-color: var(--border-strong);
+      transform: translateY(-1px);
+    }
+    .card-visual {
+      aspect-ratio: 16 / 9;
+      background: var(--surface-warm);
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+    }
+    .card-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .recipe-card:hover .card-photo {
+      transform: scale(1.03);
+    }
+    .card-cat {
+      position: absolute;
+      top: 10px;
+      left: 12px;
+      z-index: 2;
+      font-size: 10.5px;
+      font-weight: 600;
+      letter-spacing: 0.06em;
+      color: var(--text);
+      background: rgba(250, 248, 244, 0.9);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(28, 25, 23, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+    }
+    .card-time {
+      position: absolute;
+      top: 10px;
+      right: 12px;
+      z-index: 2;
+      font-size: 10.5px;
+      font-weight: 500;
+      color: var(--text);
+      background: rgba(250, 248, 244, 0.9);
+      backdrop-filter: blur(4px);
+      border: 1px solid rgba(28, 25, 23, 0.1);
+      padding: 2px 8px;
+      border-radius: 4px;
+      font-variant-numeric: tabular-nums;
+    }
+    .card-body {
+      padding: 18px 20px 20px;
+      display: flex;
+      flex-direction: column;
+      gap: 8px;
+      flex: 1;
+    }
+    .card-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 17px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text);
+    }
+    .card-summary {
+      margin: 0;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.6;
+      flex: 1;
+    }
+    .card-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
+      margin-top: 6px;
+      padding-top: 10px;
+      border-top: 1px solid var(--border);
+    }
+    .tag {
+      font-size: 11px;
+      color: var(--text-muted);
+      background: var(--bg);
+      border: 1px solid var(--border);
+      padding: 1px 8px;
+      border-radius: 4px;
+    }
+
+    /* Detail View (Open Cookbook Spread) */
+    .detail-view {
+      display: none;
+      flex: 1;
+      flex-direction: column;
+    }
+    .detail-view.open { display: flex; }
+
+    .detail-bar {
+      position: sticky;
+      top: 0;
+      z-index: 20;
+      background: rgba(250, 248, 244, 0.95);
+      backdrop-filter: blur(8px);
+      border-bottom: 1px solid var(--border);
+      padding: 10px 28px;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 12px;
+      flex-wrap: wrap;
+    }
+    .detail-bar-left, .detail-bar-right {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+      flex-wrap: wrap;
+    }
+
+    .book-sheet {
+      max-width: 1040px;
+      width: 100%;
+      margin: 28px auto 96px;
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+    }
+    .book-hero {
+      padding: 32px 36px 28px;
+      border-bottom: 1px solid var(--border);
+      display: grid;
+      grid-template-columns: minmax(0, 1fr) 320px;
+      gap: 28px;
+      align-items: center;
+      background: linear-gradient(180deg, #fdfcf9 0%, #ffffff 100%);
+    }
+    .hero-meta {
+      display: flex;
+      align-items: center;
+      gap: 14px;
+      font-size: 12px;
+      color: var(--text-muted);
+      margin-bottom: 10px;
+      font-variant-numeric: tabular-nums;
+    }
+    .hero-cat {
+      color: var(--accent);
+      font-weight: 600;
+      letter-spacing: 0.06em;
+    }
+    .hero-title {
+      margin: 0 0 10px;
+      font-family: var(--font-serif);
+      font-size: 28px;
+      font-weight: 600;
+      line-height: 1.35;
+      letter-spacing: 0.02em;
+    }
+    .hero-summary {
+      margin: 0;
+      font-size: 13.5px;
+      color: var(--text-sub);
+      max-width: 620px;
+    }
+    .hero-art {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      background: var(--surface-warm);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      aspect-ratio: 16 / 9;
+      overflow: hidden;
+    }
+    .hero-photo {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+
+    .book-spread {
+      display: grid;
+      grid-template-columns: 340px minmax(0, 1fr);
+    }
+    .col-ingredients {
+      padding: 28px 28px 32px;
+      border-right: 1px solid var(--border);
+      background: #fcfbf8;
+    }
+    .col-steps {
+      padding: 28px 36px 36px;
+    }
+
+    .sec-head {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 14px;
+      padding-bottom: 8px;
+      border-bottom: 1px solid var(--border);
+    }
+    .sec-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .sec-sub {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    .servings-bar {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 16px;
+    }
+    .servings-label {
+      font-size: 12px;
+      color: var(--text-sub);
+      font-weight: 500;
+    }
+
+    .ing-group {
+      font-size: 11px;
+      font-weight: 600;
+      color: var(--accent);
+      letter-spacing: 0.06em;
+      margin: 14px 0 6px;
+    }
+    .ing-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+    }
+    .ing-row {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding: 7px 6px;
+      border-bottom: 1px solid var(--border);
+      font-size: 13px;
+      cursor: pointer;
+      user-select: none;
+      transition: background 0.12s;
+    }
+    .ing-row:hover { background: var(--surface-warm); }
+    .ing-row.checked {
+      color: var(--text-muted);
+      text-decoration: line-through;
+    }
+    .ing-name {
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .ing-check {
+      width: 14px;
+      height: 14px;
+      border: 1px solid var(--border-strong);
+      border-radius: 3px;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 10px;
+      flex-shrink: 0;
+      background: var(--surface);
+    }
+    .ing-row.checked .ing-check {
+      background: var(--accent);
+      border-color: var(--accent);
+      color: #fff;
+    }
+    .ing-amount {
+      font-variant-numeric: tabular-nums;
+      font-weight: 500;
+      white-space: nowrap;
+      color: var(--text);
+    }
+    .ing-row.checked .ing-amount { color: var(--text-muted); }
+
+    .ing-actions {
+      display: flex;
+      gap: 8px;
+      margin-top: 16px;
+    }
+
+    /* Steps */
+    .step-list {
+      list-style: none;
+      margin: 0;
+      padding: 0;
+      display: flex;
+      flex-direction: column;
+      gap: 14px;
+    }
+    .step-item {
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      padding: 16px 18px;
+      background: var(--surface);
+      transition: border-color 0.14s, background 0.14s;
+    }
+    .step-item.done {
+      background: #faf8f4;
+      border-color: var(--border);
+      opacity: 0.72;
+    }
+    .step-top {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      margin-bottom: 6px;
+      cursor: pointer;
+    }
+    .step-heading {
+      display: flex;
+      align-items: baseline;
+      gap: 10px;
+    }
+    .step-num {
+      font-family: var(--font-serif);
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--terracotta);
+      font-variant-numeric: tabular-nums;
+    }
+    .step-title {
+      font-size: 14.5px;
+      font-weight: 600;
+      color: var(--text);
+    }
+    .step-item.done .step-title { text-decoration: line-through; color: var(--text-muted); }
+    .step-body {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.75;
+    }
+    .step-timer-row {
+      margin-top: 10px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
+    }
+    .timer-trigger {
+      border: 1px solid var(--terracotta);
+      background: rgba(166, 75, 42, 0.06);
+      color: var(--terracotta);
+      font-family: inherit;
+      font-size: 12px;
+      font-weight: 600;
+      padding: 4px 12px;
+      border-radius: 5px;
+      cursor: pointer;
+      font-variant-numeric: tabular-nums;
+      transition: background 0.14s, color 0.14s;
+    }
+    .timer-trigger:hover {
+      background: var(--terracotta);
+      color: #fff;
+    }
+
+    .tips-box {
+      margin-top: 28px;
+      padding-top: 20px;
+      border-top: 1px solid var(--border);
+    }
+    .tips-list {
+      margin: 8px 0 0;
+      padding-left: 18px;
+      font-size: 12.5px;
+      color: var(--text-sub);
+      line-height: 1.7;
+    }
+    .tips-list li + li { margin-top: 4px; }
+    .pairings-row {
+      margin-top: 16px;
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 8px;
+      font-size: 12px;
+      color: var(--text-muted);
+    }
+
+    /* Floating Kitchen Timer Bar */
+    .timer-dock {
+      position: fixed;
+      bottom: 18px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 50;
+      background: #1c1917;
+      color: #faf8f4;
+      border: 1px solid #44403c;
+      border-radius: 10px;
+      padding: 10px 18px;
+      display: none;
+      align-items: center;
+      gap: 16px;
+      box-shadow: 0 10px 28px rgba(0, 0, 0, 0.18);
+    }
+    .timer-dock.active { display: flex; }
+    .timer-dock-label {
+      font-size: 12px;
+      color: #d6d3d1;
+      max-width: 200px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    .timer-dock-clock {
+      font-size: 20px;
+      font-weight: 700;
+      font-variant-numeric: tabular-nums;
+      letter-spacing: 0.04em;
+      min-width: 62px;
+      text-align: center;
+    }
+    .timer-dock-clock.done { color: #f59e0b; }
+    .dock-btn {
+      border: 1px solid #57534e;
+      background: #292524;
+      color: #faf8f4;
+      font-family: inherit;
+      font-size: 11.5px;
+      padding: 4px 10px;
+      border-radius: 5px;
+      cursor: pointer;
+    }
+    .dock-btn:hover { background: #44403c; }
+
+    .toast {
+      position: fixed;
+      bottom: 20px;
+      right: 20px;
+      z-index: 60;
+      background: #1c1917;
+      color: #faf8f4;
+      font-size: 12.5px;
+      padding: 8px 14px;
+      border-radius: 6px;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.2s;
+    }
+    .toast.show { opacity: 1; }
+
+    .empty-state {
+      padding: 48px 16px;
+      text-align: center;
+      color: var(--text-muted);
+      border: 1px dashed var(--border-strong);
+      border-radius: 8px;
+      background: var(--surface);
+      font-size: 13px;
+    }
+
+    @media (max-width: 820px) {
+      .shelf-header, .detail-bar { padding: 10px 14px; }
+      .shelf-main { padding: 16px 12px; }
+      .recipe-grid { grid-template-columns: 1fr; }
+      .search-input { width: 100%; }
+      #bar-title { display: none; }
+      .book-sheet { width: auto; margin: 12px 12px 96px; }
+      .book-hero { grid-template-columns: 1fr; padding: 18px 16px; gap: 14px; }
+      .hero-title { font-size: 22px; }
+      .hero-art { order: -1; }
+      .book-spread { grid-template-columns: 1fr; }
+      .col-ingredients { border-right: 0; border-bottom: 1px solid var(--border); padding: 18px 16px; }
+      .col-steps { padding: 18px 16px; }
+      .timer-dock { left: 12px; right: 12px; transform: none; justify-content: space-between; gap: 10px; padding: 10px 14px; }
+    }
+  </style>
+</head>
+<body>
+  <div class="app">
+    <header class="shelf-header" id="shelf-header">
+      <div class="brand">
+        <h1 class="brand-title">Recipe Shelf</h1>
+        <span class="brand-count" id="shelf-count">0 recipes</span>
+      </div>
+      <div class="controls">
+        <div class="tabs" id="cat-tabs" role="tablist"></div>
+        <input id="search-input" class="search-input" type="search" placeholder="料理名・食材で検索..." />
+        <button type="button" class="btn" id="btn-copy-gem">Gemini用プロンプト</button>
+      </div>
+    </header>
+
+    <main class="shelf-main" id="shelf-main">
+      <div class="recipe-grid" id="recipe-grid"></div>
+    </main>
+
+    <section class="detail-view" id="detail-view">
+      <div class="detail-bar">
+        <div class="detail-bar-left">
+          <button type="button" class="btn" id="btn-back">← 棚へ戻る</button>
+          <span id="bar-title" style="font-size:13px;font-weight:600;"></span>
+        </div>
+        <div class="detail-bar-right">
+          <button type="button" class="btn" id="btn-copy-shopping">買い出しリストをコピー</button>
+        </div>
+      </div>
+
+      <article class="book-sheet">
+        <header class="book-hero">
+          <div>
+            <div class="hero-meta">
+              <span class="hero-cat" id="hero-cat"></span>
+              <span id="hero-time"></span>
+              <span id="hero-diff"></span>
+            </div>
+            <h2 class="hero-title" id="hero-title"></h2>
+            <p class="hero-summary" id="hero-summary"></p>
+          </div>
+          <div class="hero-art" id="hero-art"></div>
+        </header>
+
+        <div class="book-spread">
+          <aside class="col-ingredients">
+            <div class="sec-head">
+              <h3 class="sec-title">材料</h3>
+              <span class="sec-sub" id="servings-note"></span>
+            </div>
+            <div class="servings-bar">
+              <span class="servings-label">人数換算</span>
+              <div class="tabs" id="servings-tabs">
+                <button type="button" class="tab-btn" data-srv="1">1人</button>
+                <button type="button" class="tab-btn" data-srv="2">2人</button>
+                <button type="button" class="tab-btn" data-srv="3">3人</button>
+                <button type="button" class="tab-btn" data-srv="4">4人</button>
+              </div>
+            </div>
+            <div id="ingredients-container"></div>
+            <div class="ing-actions">
+              <button type="button" class="btn" id="btn-reset-checks">チェックを戻す</button>
+            </div>
+          </aside>
+
+          <section class="col-steps">
+            <div class="sec-head">
+              <h3 class="sec-title">作り方</h3>
+              <span class="sec-sub">タップで完了チェック</span>
+            </div>
+            <ol class="step-list" id="step-list"></ol>
+
+            <div class="tips-box">
+              <h3 class="sec-title" style="font-size:14.5px;">美味しく作るコツ</h3>
+              <ul class="tips-list" id="tips-list"></ul>
+              <div class="pairings-row" id="pairings-row"></div>
+            </div>
+          </section>
+        </div>
+      </article>
+    </section>
+  </div>
+
+  <div class="timer-dock" id="timer-dock" aria-live="polite">
+    <span class="timer-dock-label" id="timer-label">タイマー</span>
+    <span class="timer-dock-clock" id="timer-clock">00:00</span>
+    <button type="button" class="dock-btn" id="timer-toggle">一時停止</button>
+    <button type="button" class="dock-btn" id="timer-close">閉じる</button>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+  <script>
+    const CAT_ORDER = ['和食', '洋食', '中華', '麺・丼', 'おつまみ', '汁物・副菜'];
+    let indexData = { items: [] };
+    const itemCache = new Map();
+    let activeCat = 'all';
+    let searchQuery = '';
+    let currentRecipe = null;
+    let currentServings = 2;
+    let checkedIngredients = new Set();
+    let doneSteps = new Set();
+
+    // Timer state
+    let timerRemaining = 0;
+    let timerRunning = false;
+    let timerHandle = null;
+
+    const shelfHeader = document.getElementById('shelf-header');
+    const shelfMain = document.getElementById('shelf-main');
+    const recipeGrid = document.getElementById('recipe-grid');
+    const detailView = document.getElementById('detail-view');
+    const toastEl = document.getElementById('toast');
+
+    function esc(s) {
+      return String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function showToast(msg) {
+      toastEl.textContent = msg;
+      toastEl.classList.add('show');
+      clearTimeout(showToast._t);
+      showToast._t = setTimeout(() => toastEl.classList.remove('show'), 2400);
+    }
+
+    async function copyText(text, label) {
+      try {
+        await navigator.clipboard.writeText(text);
+      } catch {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        ta.style.position = 'fixed';
+        ta.style.opacity = '0';
+        document.body.appendChild(ta);
+        ta.select();
+        document.execCommand('copy');
+        ta.remove();
+      }
+      showToast(label + ' をコピーしました');
+    }
+
+    function unwrapRecipeEnvelope(raw) {
+      if (raw && raw.schema === 'studio.item/v1' && raw.payload && typeof raw.payload === 'object') {
+        return Object.assign({}, raw.meta || {}, raw.payload, {
+          schema: raw.schema,
+          kind: raw.kind,
+          id: raw.id,
+          title: raw.title,
+          category: raw.category,
+          summary: raw.summary,
+          tags: raw.tags,
+          visibility: raw.visibility,
+          updatedAt: raw.updatedAt,
+        });
+      }
+      return raw;
+    }
+
+    async function loadRecipeDetail(entry) {
+      if (itemCache.has(entry.id)) return itemCache.get(entry.id);
+      const resp = await fetch('./' + entry.file + '?t=' + Date.now());
+      const detail = unwrapRecipeEnvelope(await resp.json());
+      itemCache.set(entry.id, detail);
+      return detail;
+    }
+
+    function formatScaledAmount(ing, ratio) {
+      if (ing.text) return ing.text;
+      if (typeof ing.amount !== 'number') return ing.unit || '';
+      const val = Math.round(ing.amount * ratio * 100) / 100;
+      const fracMap = { 0.25: '1/4', 0.33: '1/3', 0.5: '1/2', 0.67: '2/3', 0.75: '3/4' };
+      const intPart = Math.floor(val);
+      const fracPart = Math.round((val - intPart) * 100) / 100;
+      let numStr;
+      if (fracPart === 0) {
+        numStr = String(intPart);
+      } else if (fracMap[fracPart]) {
+        numStr = intPart > 0 ? (intPart + 'と' + fracMap[fracPart]) : fracMap[fracPart];
+      } else {
+        numStr = String(Math.round(val * 10) / 10);
+      }
+      const unit = ing.unit || '';
+      if (/^(大さじ|小さじ)/.test(unit)) return unit + numStr;
+      return numStr + unit;
+    }
+
+    function formatClock(sec) {
+      const s = Math.max(0, Math.floor(sec));
+      const m = Math.floor(s / 60);
+      const r = s % 60;
+      return String(m).padStart(2, '0') + ':' + String(r).padStart(2, '0');
+    }
+
+    function playKitchenBell() {
+      try {
+        const ctx = new (window.AudioContext || window.webkitAudioContext)();
+        const now = ctx.currentTime;
+        [880, 1318.5].forEach((freq, i) => {
+          const osc = ctx.createOscillator();
+          const gain = ctx.createGain();
+          osc.type = 'sine';
+          osc.frequency.setValueAtTime(freq, now + i * 0.18);
+          gain.gain.setValueAtTime(0.18, now + i * 0.18);
+          gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.18 + 0.9);
+          osc.connect(gain);
+          gain.connect(ctx.destination);
+          osc.start(now + i * 0.18);
+          osc.stop(now + i * 0.18 + 0.95);
+        });
+      } catch {
+        // ignore audio errors
+      }
+    }
+
+    function startTimer(sec, label) {
+      clearInterval(timerHandle);
+      timerRemaining = sec;
+      timerRunning = true;
+      document.getElementById('timer-label').textContent = label;
+      const clock = document.getElementById('timer-clock');
+      clock.classList.remove('done');
+      clock.textContent = formatClock(timerRemaining);
+      document.getElementById('timer-toggle').textContent = '一時停止';
+      document.getElementById('timer-dock').classList.add('active');
+      timerHandle = setInterval(() => {
+        if (!timerRunning) return;
+        timerRemaining--;
+        clock.textContent = formatClock(timerRemaining);
+        if (timerRemaining <= 0) {
+          clearInterval(timerHandle);
+          timerRunning = false;
+          clock.classList.add('done');
+          document.getElementById('timer-toggle').textContent = '完了';
+          playKitchenBell();
+          showToast('タイマー完了: ' + label);
+        }
+      }, 1000);
+    }
+
+    function renderCategoryTabs() {
+      const catTabs = document.getElementById('cat-tabs');
+      const present = new Set((indexData.items || []).map((i) => i.category).filter(Boolean));
+      const ordered = [
+        ...CAT_ORDER.filter((c) => present.has(c)),
+        ...[...present].filter((c) => !CAT_ORDER.includes(c)),
+      ];
+      catTabs.innerHTML = [
+        `<button type="button" class="tab-btn${activeCat === 'all' ? ' active' : ''}" data-cat="all">すべて</button>`,
+        ...ordered.map((c) => `<button type="button" class="tab-btn${activeCat === c ? ' active' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`),
+      ].join('');
+    }
+
+    function renderGrid() {
+      const q = searchQuery.trim().toLowerCase();
+      const filtered = (indexData.items || []).filter((item) => {
+        if (activeCat !== 'all' && item.category !== activeCat) return false;
+        if (!q) return true;
+        const hay = [item.title, item.category, item.summary, ...(item.tags || [])].join(' ').toLowerCase();
+        return hay.includes(q);
+      });
+
+      document.getElementById('shelf-count').textContent = filtered.length + ' / ' + (indexData.items || []).length + ' recipes';
+      recipeGrid.innerHTML = '';
+
+      if (filtered.length === 0) {
+        recipeGrid.innerHTML = '<div class="empty-state">条件に一致するレシピがありません。チャットや Gemini で studio.item/v1 レシピ JSON を追加すると自動で並びます。</div>';
+        return;
+      }
+
+      for (const item of filtered) {
+        const card = document.createElement('article');
+        card.className = 'recipe-card';
+        const svg = item.iconSvg || '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#3f523a" stroke-width="1.5"><circle cx="32" cy="36" r="18"/><path d="M18 36h28M24 22c0-4 4-6 4-10M36 22c0-4 4-6 4-10"/></svg>';
+        const visualHtml = item.image
+          ? `<img class="card-photo" src="${esc(item.image)}" alt="${esc(item.title)}" loading="lazy" />`
+          : `<div>${svg}</div>`;
+        card.innerHTML = `
+          <div class="card-visual">
+            <span class="card-cat">${esc(item.category || 'レシピ')}</span>
+            <span class="card-time">${item.timeMin ? esc(item.timeMin + '分') : ''}</span>
+            ${visualHtml}
+          </div>
+          <div class="card-body">
+            <h2 class="card-title">${esc(item.title)}</h2>
+            <p class="card-summary">${esc(item.summary || '')}</p>
+            <div class="card-tags">
+              ${(item.tags || []).slice(0, 4).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}
+            </div>
+          </div>
+        `;
+        card.addEventListener('click', () => openDetail(item));
+        recipeGrid.appendChild(card);
+      }
+    }
+
+    function renderIngredients() {
+      if (!currentRecipe) return;
+      const base = currentRecipe.baseServings || 2;
+      const ratio = currentServings / base;
+      document.getElementById('servings-note').textContent = currentServings + '人分（基準: ' + base + '人分）';
+      document.querySelectorAll('#servings-tabs .tab-btn').forEach((b) => {
+        b.classList.toggle('active', Number(b.dataset.srv) === currentServings);
+      });
+
+      const container = document.getElementById('ingredients-container');
+      container.innerHTML = '';
+      const ings = currentRecipe.ingredients || [];
+      let lastGroup = null;
+      let ul = null;
+
+      ings.forEach((ing, idx) => {
+        const grp = ing.group || '';
+        if (grp !== lastGroup || !ul) {
+          if (grp) {
+            const h = document.createElement('div');
+            h.className = 'ing-group';
+            h.textContent = grp;
+            container.appendChild(h);
+          }
+          ul = document.createElement('ul');
+          ul.className = 'ing-list';
+          container.appendChild(ul);
+          lastGroup = grp;
+        }
+        const li = document.createElement('li');
+        li.className = 'ing-row' + (checkedIngredients.has(idx) ? ' checked' : '');
+        li.innerHTML = `
+          <span class="ing-name">
+            <span class="ing-check">${checkedIngredients.has(idx) ? '✓' : ''}</span>
+            <span>${esc(ing.name)}</span>
+          </span>
+          <span class="ing-amount">${esc(formatScaledAmount(ing, ratio))}</span>
+        `;
+        li.addEventListener('click', () => {
+          if (checkedIngredients.has(idx)) checkedIngredients.delete(idx);
+          else checkedIngredients.add(idx);
+          renderIngredients();
+        });
+        ul.appendChild(li);
+      });
+    }
+
+    function renderSteps() {
+      if (!currentRecipe) return;
+      const list = document.getElementById('step-list');
+      list.innerHTML = '';
+      (currentRecipe.steps || []).forEach((st, idx) => {
+        const li = document.createElement('li');
+        li.className = 'step-item' + (doneSteps.has(idx) ? ' done' : '');
+        const num = String(idx + 1).padStart(2, '0');
+        li.innerHTML = `
+          <div class="step-top">
+            <div class="step-heading">
+              <span class="step-num">${num}</span>
+              <span class="step-title">${esc(st.title)}</span>
+            </div>
+            <span style="font-size:11px;color:var(--text-muted);">${doneSteps.has(idx) ? '完了' : ''}</span>
+          </div>
+          <p class="step-body">${esc(st.body)}</p>
+          ${st.timerSec ? `<div class="step-timer-row"><button type="button" class="timer-trigger" data-sec="${st.timerSec}" data-label="${esc(st.title)}">▶ ${formatClock(st.timerSec)} タイマー開始</button></div>` : ''}
+        `;
+        li.querySelector('.step-top').addEventListener('click', () => {
+          if (doneSteps.has(idx)) doneSteps.delete(idx);
+          else doneSteps.add(idx);
+          renderSteps();
+        });
+        const tBtn = li.querySelector('.timer-trigger');
+        if (tBtn) {
+          tBtn.addEventListener('click', (e) => {
+            e.stopPropagation();
+            startTimer(Number(tBtn.dataset.sec), tBtn.dataset.label);
+          });
+        }
+        list.appendChild(li);
+      });
+    }
+
+    async function openDetail(entry) {
+      const detail = await loadRecipeDetail(entry);
+      currentRecipe = Object.assign({}, entry, detail);
+      currentServings = currentRecipe.baseServings || 2;
+      checkedIngredients = new Set();
+      doneSteps = new Set();
+
+      shelfHeader.style.display = 'none';
+      shelfMain.classList.add('hidden');
+      detailView.classList.add('open');
+
+      document.getElementById('bar-title').textContent = currentRecipe.title;
+      document.getElementById('hero-cat').textContent = currentRecipe.category || 'レシピ';
+      document.getElementById('hero-time').textContent = currentRecipe.timeMin ? ('調理時間 ' + currentRecipe.timeMin + '分') : '';
+      document.getElementById('hero-diff').textContent = currentRecipe.difficulty ? ('難易度 ' + currentRecipe.difficulty) : '';
+      document.getElementById('hero-title').textContent = currentRecipe.title;
+      document.getElementById('hero-summary').textContent = currentRecipe.summary || '';
+      document.getElementById('hero-art').innerHTML = currentRecipe.image
+        ? `<img class="hero-photo" src="${esc(currentRecipe.image)}" alt="${esc(currentRecipe.title)}" />`
+        : (currentRecipe.iconSvg || '');
+
+      renderIngredients();
+      renderSteps();
+
+      document.getElementById('tips-list').innerHTML = (currentRecipe.tips || []).map((t) => `<li>${esc(t)}</li>`).join('');
+      const pairings = currentRecipe.pairings || [];
+      document.getElementById('pairings-row').innerHTML = pairings.length
+        ? '<span>相性の良い副菜・お酒:</span>' + pairings.map((p) => `<span class="tag">${esc(p)}</span>`).join('')
+        : '';
+      window.scrollTo(0, 0);
+    }
+
+    function closeDetail() {
+      currentRecipe = null;
+      detailView.classList.remove('open');
+      shelfMain.classList.remove('hidden');
+      shelfHeader.style.display = '';
+    }
+
+    document.getElementById('btn-back').addEventListener('click', closeDetail);
+
+    document.getElementById('cat-tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-cat]');
+      if (!btn) return;
+      activeCat = btn.dataset.cat;
+      renderCategoryTabs();
+      renderGrid();
+    });
+
+    document.getElementById('servings-tabs').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-srv]');
+      if (!btn) return;
+      currentServings = Number(btn.dataset.srv);
+      renderIngredients();
+    });
+
+    document.getElementById('btn-reset-checks').addEventListener('click', () => {
+      checkedIngredients.clear();
+      renderIngredients();
+    });
+
+    document.getElementById('btn-copy-shopping').addEventListener('click', () => {
+      if (!currentRecipe) return;
+      const base = currentRecipe.baseServings || 2;
+      const ratio = currentServings / base;
+      const remaining = (currentRecipe.ingredients || [])
+        .map((ing, idx) => ({ ing, idx }))
+        .filter(({ idx }) => !checkedIngredients.has(idx))
+        .map(({ ing }) => `- ${ing.name}: ${formatScaledAmount(ing, ratio)}`);
+      const text = [
+        `【買い出しリスト】${currentRecipe.title}（${currentServings}人分）`,
+        ...(remaining.length ? remaining : ['すべて揃っています']),
+      ].join('\n');
+      copyText(text, '買い出しリスト');
+    });
+
+    document.getElementById('btn-copy-gem').addEventListener('click', () => {
+      const gemPrompt = [
+        '以下の studio.item/v1 形式の JSON のみをコードブロックで出力してください（Recipe Shelf 用）。',
+        '```json',
+        '{',
+        '  "schema": "studio.item/v1",',
+        '  "kind": "recipe",',
+        '  "id": "YYYYMMDD-english-slug",',
+        '  "title": "料理タイトル",',
+        '  "category": "和食 | 洋食 | 中華 | 麺・丼 | おつまみ",',
+        '  "summary": "1行の魅力紹介",',
+        '  "tags": ["食材1", "食材2", "時短"],',
+        '  "visibility": "internal",',
+        '  "updatedAt": "YYYY-MM-DDTHH:mm:ss",',
+        '  "meta": { "timeMin": 15, "difficulty": "初級", "baseServings": 2 },',
+        '  "payload": {',
+        '    "ingredients": [',
+        '      { "group": "主材料", "name": "食材名", "amount": 200, "unit": "g" },',
+        '      { "group": "調味料", "name": "醤油", "amount": 2, "unit": "大さじ" },',
+        '      { "group": "調味料", "name": "塩", "text": "少々" }',
+        '    ],',
+        '    "steps": [',
+        '      { "title": "工程見出し", "body": "具体的な手順", "timerSec": 180 }',
+        '    ],',
+        '    "tips": ["失敗しないコツ1", "コツ2"],',
+        '    "pairings": ["合う副菜・お酒"]',
+        '  }',
+        '}',
+        '```',
+      ].join('\n');
+      copyText(gemPrompt, 'Gemini用レシピ出力プロンプト');
+    });
+
+    document.getElementById('timer-toggle').addEventListener('click', () => {
+      if (timerRemaining <= 0) return;
+      timerRunning = !timerRunning;
+      document.getElementById('timer-toggle').textContent = timerRunning ? '一時停止' : '再開';
+    });
+
+    document.getElementById('timer-close').addEventListener('click', () => {
+      clearInterval(timerHandle);
+      timerRunning = false;
+      document.getElementById('timer-dock').classList.remove('active');
+    });
+
+    document.getElementById('search-input').addEventListener('input', (e) => {
+      searchQuery = e.target.value;
+      renderGrid();
+    });
+
+    async function init() {
+      try {
+        const resp = await fetch('./data.json?t=' + Date.now());
+        indexData = await resp.json();
+        renderCategoryTabs();
+        renderGrid();
+      } catch (err) {
+        recipeGrid.innerHTML = '<div class="empty-state">data.json の読み込みに失敗しました。</div>';
+      }
+    }
+    init();
+  </script>
+</body>
+</html>

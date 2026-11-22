@@ -1,0 +1,121 @@
+{
+  "schema_version": 1,
+  "title": "Shelf",
+  "items": [
+    {
+      "timeMin": 15,
+      "difficulty": "中級",
+      "baseServings": 2,
+      "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><ellipse cx=\"32\" cy=\"42\" rx=\"22\" ry=\"10\"/><path d=\"M16 38c6-12 26-12 32 0\"/><path d=\"M22 36c4-6 16-6 20 0\" stroke=\"#a64b2a\"/><path d=\"M38 20l8-6\"/></svg>",
+      "image": "./images/20261122-emulsified-peperoncino.jpg",
+      "id": "20261122-emulsified-peperoncino",
+      "title": "失敗しない乳化ペペロンチーノ",
+      "category": "洋食",
+      "summary": "弱火でじっくりにんにくの香りを移し、ゆで汁のデンプンでソースをとろりと乳化させる基本の一皿。",
+      "tags": [
+        "パスタ",
+        "にんにく",
+        "唐辛子",
+        "15分",
+        "定番"
+      ],
+      "visibility": "internal",
+      "updatedAt": "2026-11-22T20:10:00",
+      "file": "items/20261122-emulsified-peperoncino.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 15,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M10 34h44c0 12-10 20-22 20S10 46 10 34z\"/><path d=\"M22 54h20\"/><path d=\"M16 34c4-6 10-8 16-8s12 2 16 8\"/><circle cx=\"32\" cy=\"29\" r=\"3.5\" stroke=\"#a64b2a\"/></svg>",
+      "image": "./images/20261122-golden-oyakodon.jpg",
+      "id": "20261122-golden-oyakodon",
+      "title": "黄金比のだし香る、ふわとろ親子丼",
+      "category": "和食",
+      "summary": "卵を2回に分けて流し込むだけで、専門店のような半熟とろとろに仕上がる基本の黄金比親子丼。",
+      "tags": [
+        "鶏もも肉",
+        "卵",
+        "玉ねぎ",
+        "15分",
+        "定番"
+      ],
+      "visibility": "internal",
+      "updatedAt": "2026-11-22T20:10:00",
+      "file": "items/20261122-golden-oyakodon.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 25,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\" stroke-linejoin=\"round\"><path d=\"M12 30h40v12c0 7-6 12-14 12H26c-8 0-14-5-14-12V30z\"/><path d=\"M8 30h48\"/><path d=\"M24 22c0-3 2-5 2-8\" stroke=\"#a64b2a\"/><path d=\"M32 20c0-3 2-5 2-8\" stroke=\"#a64b2a\"/><path d=\"M40 22c0-3 2-5 2-8\" stroke=\"#a64b2a\"/></svg>",
+      "image": "./images/20261122-melting-onion-hayashi-pork.jpg",
+      "id": "20261122-melting-onion-hayashi-pork",
+      "title": "とろとろたまねぎのハヤシ風ポーク煮込み（ルウ不要）",
+      "category": "洋食",
+      "summary": "たまねぎ2個を塩蒸し焼きにして甘みを最大限に引き出し、市販ルウ不要の黄金比ソースで濃厚に仕上げるハヤシ風ポーク煮込み。",
+      "tags": [
+        "たまねぎ",
+        "豚こま肉",
+        "ルウ不要",
+        "煮込み",
+        "25分"
+      ],
+      "visibility": "internal",
+      "updatedAt": "2026-11-22T20:50:00",
+      "file": "items/20261122-melting-onion-hayashi-pork.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 12,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><rect x=\"12\" y=\"24\" width=\"40\" height=\"22\" rx=\"4\"/><path d=\"M20 35h24\" stroke=\"#a64b2a\"/><path d=\"M22 18c0-3 3-4 3-7M32 18c0-3 3-4 3-7M42 18c0-3 3-4 3-7\"/></svg>",
+      "image": "./images/20261122-negishio-chicken.jpg",
+      "id": "20261122-negishio-chicken",
+      "title": "鶏もも肉と長ねぎの香ばし塩だれ焼き",
+      "category": "おつまみ",
+      "summary": "皮目をパリッと焼き上げた鶏もも肉に、ごま油とにんにくの効いたねぎ塩だれを絡める12分の定番おつまみ。",
+      "tags": [
+        "鶏もも肉",
+        "長ねぎ",
+        "ごま油",
+        "12分",
+        "ビールに合う"
+      ],
+      "visibility": "internal",
+      "updatedAt": "2026-11-22T20:10:00",
+      "file": "items/20261122-negishio-chicken.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 15,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><path d=\"M14 31h36v7c0 8-6.5 14-14.5 14h-7C20.5 52 14 46 14 38v-7z\"/><path d=\"M14 34H9.5c-1.4 0-2.5 1.1-2.5 2.5S8.1 39 9.5 39H14M50 34h4.5c1.4 0 2.5 1.1 2.5 2.5S55.9 39 54.5 39H50\"/><path d=\"M23 52v3h18v-3\"/><path d=\"M20 39q3-2 6 0t6 0 6 0 6 0\" stroke=\"#a64b2a\"/><path d=\"M23 24c0-3 3-4 3-7M32 24c0-3 3-4 3-7M41 24c0-3 3-4 3-7\"/></svg>",
+      "image": "./images/20261122-pork-tofu-sundubu-soup.jpg",
+      "id": "20261122-pork-tofu-sundubu-soup",
+      "title": "市販の素いらず！豚と豆腐の旨辛スンドゥブ風スープ",
+      "category": "汁物・鍋",
+      "summary": "粗挽き韓国唐辛子を弱火で炒めて赤い香味油を引き出し、家庭の基本調味料の黄金比でコク深く仕上げる豚と豆腐の旨辛スンドゥブ風スープ。",
+      "tags": [
+        "韓国唐辛子",
+        "豚肉",
+        "豆腐",
+        "スンドゥブ風",
+        "15分"
+      ],
+      "visibility": "internal",
+      "updatedAt": "2026-11-22T21:05:00",
+      "file": "items/20261122-pork-tofu-sundubu-soup.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    }
+  ]
+}
