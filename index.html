@@ -146,6 +146,12 @@
       transition: background 0.14s, border-color 0.14s;
     }
     .btn:hover { background: var(--surface-warm); border-color: var(--border-strong); }
+    .btn-icon {
+      width: 32px;
+      height: 32px;
+      padding: 0;
+      justify-content: center;
+    }
     .btn-accent {
       background: var(--accent);
       color: var(--accent-fg);
@@ -902,7 +908,9 @@
       </div>
       <div class="controls">
         <input id="search-input" class="search-input" type="search" placeholder="料理名・食材で検索..." />
-        <button type="button" class="btn btn-fav" id="btn-header-fav" title="お気に入りのみ表示">☆ お気に入り</button>
+        <button type="button" class="btn btn-icon btn-fav" id="btn-header-fav" title="お気に入りのみ表示" aria-label="お気に入りのみ表示">
+          <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+        </button>
       </div>
     </header>
 
@@ -928,12 +936,20 @@
             <span class="brand-title">Recipe Shelf</span>
           </div>
           <span class="header-divider"></span>
-          <button type="button" class="btn" id="btn-back">← 一覧へ</button>
+          <button type="button" class="btn btn-icon" id="btn-back" title="一覧へ戻る" aria-label="一覧へ戻る">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><line x1="19" y1="12" x2="5" y2="12"/><polyline points="12 19 5 12 12 5"/></svg>
+          </button>
         </div>
         <div class="detail-bar-right">
-          <button type="button" class="btn btn-fav" id="btn-detail-fav">☆ お気に入り</button>
-          <button type="button" class="btn" id="btn-copy-link">リンクコピー</button>
-          <button type="button" class="btn" id="btn-copy-shopping">買い出しリスト</button>
+          <button type="button" class="btn btn-icon btn-fav" id="btn-detail-fav" title="お気に入り" aria-label="お気に入り">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2"/></svg>
+          </button>
+          <button type="button" class="btn btn-icon" id="btn-copy-link" title="共有リンクをコピー" aria-label="共有リンクをコピー">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M10 13a5 5 0 0 0 7.54.54l3-3a5 5 0 0 0-7.07-7.07l-1.72 1.71"/><path d="M14 11a5 5 0 0 0-7.54-.54l-3 3a5 5 0 0 0 7.07 7.07l1.71-1.71"/></svg>
+          </button>
+          <button type="button" class="btn btn-icon" id="btn-copy-shopping" title="買い出しリストをコピー" aria-label="買い出しリストをコピー">
+            <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.75" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5H7a2 2 0 0 0-2 2v12a2 2 0 0 0 2 2h10a2 2 0 0 0 2-2V7a2 2 0 0 0-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6"/><path d="M9 16h4"/></svg>
+          </button>
         </div>
       </div>
 
@@ -1213,7 +1229,8 @@
       if (favBtn) {
         const isFavMode = activeCat === '__fav__';
         favBtn.classList.toggle('is-fav', isFavMode);
-        favBtn.textContent = isFavMode ? '★ お気に入り' : '☆ お気に入り';
+        const poly = favBtn.querySelector('polygon');
+        if (poly) poly.setAttribute('fill', isFavMode ? 'currentColor' : 'none');
       }
     }
 
@@ -1470,7 +1487,9 @@
       if (!currentRecipe || !btn) return;
       const isFav = favIds.has(currentRecipe.id);
       btn.classList.toggle('is-fav', isFav);
-      btn.textContent = isFav ? '★ お気に入り済' : '☆ お気に入り';
+      const poly = btn.querySelector('polygon');
+      if (poly) poly.setAttribute('fill', isFav ? 'currentColor' : 'none');
+      btn.title = isFav ? 'お気に入り解除' : 'お気に入りに追加';
     }
 
     async function openDetail(entry) {
