@@ -937,7 +937,7 @@
             <h2 class="card-title">${esc(item.title)}</h2>
             <p class="card-summary">${esc(item.summary || '')}</p>
             <div class="card-tags">
-              ${(item.tags || []).slice(0, 4).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}
+              ${(item.tags || []).filter((t) => !/^\d+分$/.test(String(t).trim())).slice(0, 4).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}
             </div>
           </div>
         `;
