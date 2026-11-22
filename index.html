@@ -335,6 +335,9 @@
       min-width: 0;
       flex: 1;
       overflow-x: auto;
+      overflow-y: hidden;
+      overscroll-behavior-x: contain;
+      -webkit-overflow-scrolling: touch;
       scrollbar-width: none;
     }
     .cat-nav-wrap::-webkit-scrollbar { display: none; }
@@ -351,9 +354,11 @@
       background: transparent;
       box-shadow: none;
       border-bottom: 2px solid transparent;
-      margin-bottom: -1px;
+      margin-bottom: 0;
       font-size: 12.5px;
       color: var(--text-muted);
+      user-select: none;
+      -webkit-tap-highlight-color: transparent;
     }
     .cat-tabs .tab-btn:hover { color: var(--text); }
     .cat-tabs .tab-btn.active {
