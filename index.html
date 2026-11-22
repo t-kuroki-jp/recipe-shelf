@@ -1299,9 +1299,8 @@
           : `<div>${svg}</div>`;
         card.innerHTML = `
           <div class="card-visual">
-            <span class="card-cat">${esc(item.category || 'レシピ')}</span>
+            ${item.timeMin ? `<span class="card-cat" style="font-variant-numeric:tabular-nums;">${esc(item.timeMin + '分')}</span>` : ''}
             <div class="card-top-right">
-              ${item.timeMin ? `<span class="card-time">${esc(item.timeMin + '分')}</span>` : ''}
               <button type="button" class="card-fav-btn${isFav ? ' is-fav' : ''}" data-fav-id="${esc(item.id)}" title="お気に入り">${isFav ? '★' : '☆'}</button>
             </div>
             ${visualHtml}
