@@ -16,7 +16,6 @@
         "パスタ",
         "にんにく",
         "唐辛子",
-        "15分",
         "定番"
       ],
       "visibility": "internal",
@@ -39,7 +38,6 @@
         "鶏もも肉",
         "卵",
         "玉ねぎ",
-        "15分",
         "定番"
       ],
       "visibility": "internal",
@@ -62,8 +60,7 @@
         "たまねぎ",
         "豚こま肉",
         "ルウ不要",
-        "煮込み",
-        "25分"
+        "煮込み"
       ],
       "visibility": "internal",
       "updatedAt": "2026-11-22T20:50:00",
@@ -85,12 +82,31 @@
         "鶏もも肉",
         "長ねぎ",
         "ごま油",
-        "12分",
         "ビールに合う"
       ],
       "visibility": "internal",
       "updatedAt": "2026-11-22T20:10:00",
       "file": "items/20261122-negishio-chicken.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 15,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "id": "20261122-onion-cheese-galette",
+      "title": "オニオンチーズのカリカリガレット",
+      "category": "おつまみ",
+      "summary": "薄切り玉ねぎの甘みと香ばしく焼けたチーズのカリカリ食感がたまらない、フライパン1つで作れるおつまみです。",
+      "tags": [
+        "玉ねぎ",
+        "シュレッドチーズ",
+        "フライパン",
+        "おつまみ"
+      ],
+      "visibility": "public",
+      "updatedAt": "2026-11-22T21:36:00",
+      "file": "items/20261122-onion-cheese-galette.json",
       "schema": "studio.item/v1",
       "kind": "recipe"
     },
@@ -108,8 +124,7 @@
         "韓国唐辛子",
         "豚肉",
         "豆腐",
-        "スンドゥブ風",
-        "15分"
+        "スンドゥブ風"
       ],
       "visibility": "internal",
       "updatedAt": "2026-11-22T21:05:00",
