@@ -20,6 +20,7 @@
       --accent: #3f523a;
       --accent-fg: #ffffff;
       --terracotta: #a64b2a;
+      --star: #c27803;
       --font-serif: 'Shippori Mincho', 'Hiragino Mincho ProN', 'Yu Mincho', serif;
       --font-sans: 'Inter', 'Noto Sans JP', -apple-system, BlinkMacSystemFont, sans-serif;
     }
@@ -50,17 +51,18 @@
       background: rgba(250, 248, 244, 0.94);
       backdrop-filter: blur(8px);
       border-bottom: 1px solid var(--border);
-      padding: 14px 28px;
+      padding: 12px 28px;
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 16px;
+      gap: 14px;
       flex-wrap: wrap;
     }
     .brand {
       display: flex;
       align-items: baseline;
-      gap: 12px;
+      gap: 10px;
+      cursor: pointer;
     }
     .brand-title {
       margin: 0;
@@ -87,6 +89,7 @@
       border-radius: 6px;
       padding: 2px;
       gap: 2px;
+      flex-wrap: wrap;
     }
     .tab-btn {
       border: 0;
@@ -95,7 +98,7 @@
       font-family: inherit;
       font-size: 12px;
       font-weight: 500;
-      padding: 4px 11px;
+      padding: 4px 10px;
       border-radius: 4px;
       cursor: pointer;
       transition: background 0.14s, color 0.14s;
@@ -130,6 +133,9 @@
       border-radius: 6px;
       cursor: pointer;
       white-space: nowrap;
+      display: inline-flex;
+      align-items: center;
+      gap: 5px;
       transition: background 0.14s, border-color 0.14s;
     }
     .btn:hover { background: var(--surface-warm); border-color: var(--border-strong); }
@@ -139,16 +145,149 @@
       border-color: var(--accent);
     }
     .btn-accent:hover { opacity: 0.92; background: var(--accent); }
+    .btn-fav.is-fav {
+      color: var(--star);
+      border-color: rgba(194, 120, 3, 0.4);
+      background: rgba(194, 120, 3, 0.06);
+    }
 
-    /* Shelf Grid */
+    /* Main Container */
     .shelf-main {
       max-width: 1120px;
       width: 100%;
       margin: 0 auto;
-      padding: 28px;
+      padding: 24px 28px 64px;
       flex: 1;
+      display: flex;
+      flex-direction: column;
+      gap: 24px;
     }
     .shelf-main.hidden { display: none; }
+
+    /* Featured Pickup Hero */
+    .pickup-hero {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      overflow: hidden;
+      display: grid;
+      grid-template-columns: 1.15fr 1fr;
+      cursor: pointer;
+      transition: border-color 0.16s;
+    }
+    .pickup-hero:hover { border-color: var(--border-strong); }
+    .pickup-visual {
+      aspect-ratio: 16 / 9;
+      background: var(--surface-warm);
+      overflow: hidden;
+      position: relative;
+    }
+    .pickup-visual img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+      transition: transform 0.4s cubic-bezier(0.22, 1, 0.36, 1);
+    }
+    .pickup-hero:hover .pickup-visual img { transform: scale(1.025); }
+    .pickup-body {
+      padding: 28px 32px;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      gap: 14px;
+    }
+    .pickup-kicker {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      font-size: 11px;
+      letter-spacing: 0.12em;
+      color: var(--terracotta);
+      font-weight: 600;
+    }
+    .pickup-title {
+      margin: 8px 0 10px;
+      font-family: var(--font-serif);
+      font-size: 23px;
+      font-weight: 600;
+      line-height: 1.38;
+    }
+    .pickup-summary {
+      margin: 0;
+      font-size: 13px;
+      color: var(--text-sub);
+      line-height: 1.65;
+    }
+    .pickup-footer {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 10px;
+      padding-top: 14px;
+      border-top: 1px solid var(--border);
+      flex-wrap: wrap;
+    }
+    .pickup-meta {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Ingredient Tag Ribbon */
+    .tag-ribbon {
+      display: flex;
+      align-items: center;
+      gap: 7px;
+      flex-wrap: wrap;
+    }
+    .ribbon-label {
+      font-size: 11.5px;
+      color: var(--text-muted);
+      margin-right: 4px;
+    }
+    .filter-chip {
+      border: 1px solid var(--border);
+      background: var(--surface);
+      color: var(--text-sub);
+      font-family: inherit;
+      font-size: 11.5px;
+      padding: 3px 10px;
+      border-radius: 999px;
+      cursor: pointer;
+      transition: all 0.14s;
+    }
+    .filter-chip:hover { border-color: var(--border-strong); color: var(--text); }
+    .filter-chip.active {
+      background: var(--accent);
+      color: var(--accent-fg);
+      border-color: var(--accent);
+    }
+
+    /* Section Divider Header */
+    .grid-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      gap: 12px;
+      padding-bottom: 10px;
+      border-bottom: 1px solid var(--border);
+    }
+    .grid-title {
+      margin: 0;
+      font-family: var(--font-serif);
+      font-size: 16px;
+      font-weight: 600;
+      letter-spacing: 0.04em;
+    }
+    .grid-sub {
+      font-size: 12px;
+      color: var(--text-muted);
+      font-variant-numeric: tabular-nums;
+    }
+
+    /* Recipe Grid */
     .recipe-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
@@ -185,9 +324,7 @@
       display: block;
       transition: transform 0.35s cubic-bezier(0.22, 1, 0.36, 1);
     }
-    .recipe-card:hover .card-photo {
-      transform: scale(1.03);
-    }
+    .recipe-card:hover .card-photo { transform: scale(1.03); }
     .card-cat {
       position: absolute;
       top: 10px;
@@ -203,11 +340,16 @@
       padding: 2px 8px;
       border-radius: 4px;
     }
-    .card-time {
+    .card-top-right {
       position: absolute;
       top: 10px;
       right: 12px;
       z-index: 2;
+      display: flex;
+      align-items: center;
+      gap: 6px;
+    }
+    .card-time {
       font-size: 10.5px;
       font-weight: 500;
       color: var(--text);
@@ -218,8 +360,26 @@
       border-radius: 4px;
       font-variant-numeric: tabular-nums;
     }
+    .card-fav-btn {
+      width: 24px;
+      height: 24px;
+      border-radius: 4px;
+      border: 1px solid rgba(28, 25, 23, 0.12);
+      background: rgba(250, 248, 244, 0.92);
+      color: var(--text-muted);
+      font-size: 13px;
+      line-height: 1;
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      padding: 0;
+      transition: transform 0.12s, color 0.12s;
+    }
+    .card-fav-btn:hover { transform: scale(1.08); color: var(--star); }
+    .card-fav-btn.is-fav { color: var(--star); }
     .card-body {
-      padding: 18px 20px 20px;
+      padding: 16px 18px 18px;
       display: flex;
       flex-direction: column;
       gap: 8px;
@@ -228,9 +388,9 @@
     .card-title {
       margin: 0;
       font-family: var(--font-serif);
-      font-size: 17px;
+      font-size: 16.5px;
       font-weight: 600;
-      line-height: 1.4;
+      line-height: 1.42;
       color: var(--text);
     }
     .card-summary {
@@ -255,9 +415,12 @@
       border: 1px solid var(--border);
       padding: 1px 8px;
       border-radius: 4px;
+      cursor: pointer;
+      transition: border-color 0.12s, color 0.12s;
     }
+    .tag:hover { border-color: var(--accent); color: var(--accent); }
 
-    /* Detail View (Open Cookbook Spread) */
+    /* Detail View */
     .detail-view {
       display: none;
       flex: 1;
@@ -276,20 +439,20 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      gap: 12px;
+      gap: 10px;
       flex-wrap: wrap;
     }
     .detail-bar-left, .detail-bar-right {
       display: flex;
       align-items: center;
-      gap: 10px;
+      gap: 8px;
       flex-wrap: wrap;
     }
 
     .book-sheet {
       max-width: 1040px;
       width: 100%;
-      margin: 28px auto 96px;
+      margin: 24px auto 32px;
       background: var(--surface);
       border: 1px solid var(--border);
       border-radius: 10px;
@@ -299,7 +462,7 @@
       padding: 32px 36px 28px;
       border-bottom: 1px solid var(--border);
       display: grid;
-      grid-template-columns: minmax(0, 1fr) 320px;
+      grid-template-columns: minmax(0, 1fr) 340px;
       gap: 28px;
       align-items: center;
       background: linear-gradient(180deg, #fdfcf9 0%, #ffffff 100%);
@@ -312,6 +475,7 @@
       color: var(--text-muted);
       margin-bottom: 10px;
       font-variant-numeric: tabular-nums;
+      flex-wrap: wrap;
     }
     .hero-cat {
       color: var(--accent);
@@ -321,16 +485,21 @@
     .hero-title {
       margin: 0 0 10px;
       font-family: var(--font-serif);
-      font-size: 28px;
+      font-size: 27px;
       font-weight: 600;
       line-height: 1.35;
       letter-spacing: 0.02em;
     }
     .hero-summary {
-      margin: 0;
+      margin: 0 0 14px;
       font-size: 13.5px;
       color: var(--text-sub);
       max-width: 620px;
+    }
+    .hero-tags {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 6px;
     }
     .hero-art {
       display: flex;
@@ -455,7 +624,6 @@
       color: var(--text);
     }
     .ing-row.checked .ing-amount { color: var(--text-muted); }
-
     .ing-actions {
       display: flex;
       gap: 8px;
@@ -480,7 +648,6 @@
     }
     .step-item.done {
       background: #faf8f4;
-      border-color: var(--border);
       opacity: 0.72;
     }
     .step-top {
@@ -534,10 +701,7 @@
       font-variant-numeric: tabular-nums;
       transition: background 0.14s, color 0.14s;
     }
-    .timer-trigger:hover {
-      background: var(--terracotta);
-      color: #fff;
-    }
+    .timer-trigger:hover { background: var(--terracotta); color: #fff; }
 
     .tips-box {
       margin-top: 28px;
@@ -560,6 +724,71 @@
       gap: 8px;
       font-size: 12px;
       color: var(--text-muted);
+    }
+
+    /* Personal Kitchen Note */
+    .memo-box {
+      margin-top: 22px;
+      padding-top: 18px;
+      border-top: 1px solid var(--border);
+    }
+    .memo-input {
+      width: 100%;
+      margin-top: 8px;
+      min-height: 68px;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      background: var(--bg);
+      color: var(--text);
+      font-family: inherit;
+      font-size: 12.5px;
+      padding: 9px 12px;
+      resize: vertical;
+      outline: none;
+    }
+    .memo-input:focus { border-color: var(--accent); background: var(--surface); }
+
+    /* Related Recipes Section */
+    .related-section {
+      max-width: 1040px;
+      width: 100%;
+      margin: 0 auto 96px;
+    }
+    .related-grid {
+      margin-top: 14px;
+      display: grid;
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: 16px;
+    }
+    .related-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: 8px;
+      overflow: hidden;
+      cursor: pointer;
+      transition: border-color 0.14s, transform 0.14s;
+    }
+    .related-card:hover { border-color: var(--border-strong); transform: translateY(-1px); }
+    .related-thumb {
+      aspect-ratio: 16 / 9;
+      background: var(--surface-warm);
+      overflow: hidden;
+    }
+    .related-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+    .related-body {
+      padding: 12px 14px;
+    }
+    .related-meta {
+      font-size: 11px;
+      color: var(--text-muted);
+      margin-bottom: 4px;
+    }
+    .related-title {
+      font-family: var(--font-serif);
+      font-size: 14px;
+      font-weight: 600;
+      line-height: 1.4;
+      color: var(--text);
     }
 
     /* Floating Kitchen Timer Bar */
@@ -637,17 +866,22 @@
 
     @media (max-width: 820px) {
       .shelf-header, .detail-bar { padding: 10px 14px; }
-      .shelf-main { padding: 16px 12px; }
+      .shelf-main { padding: 16px 12px 56px; gap: 18px; }
+      .pickup-hero { grid-template-columns: 1fr; }
+      .pickup-body { padding: 18px 16px; }
+      .pickup-title { font-size: 19px; }
       .recipe-grid { grid-template-columns: 1fr; }
       .search-input { width: 100%; }
       #bar-title { display: none; }
-      .book-sheet { width: auto; margin: 12px 12px 96px; }
+      .book-sheet { width: auto; margin: 12px 12px 24px; }
       .book-hero { grid-template-columns: 1fr; padding: 18px 16px; gap: 14px; }
       .hero-title { font-size: 22px; }
       .hero-art { order: -1; }
       .book-spread { grid-template-columns: 1fr; }
       .col-ingredients { border-right: 0; border-bottom: 1px solid var(--border); padding: 18px 16px; }
       .col-steps { padding: 18px 16px; }
+      .related-section { width: auto; margin: 0 12px 96px; }
+      .related-grid { grid-template-columns: 1fr; }
       .timer-dock { left: 12px; right: 12px; transform: none; justify-content: space-between; gap: 10px; padding: 10px 14px; }
     }
   </style>
@@ -655,7 +889,7 @@
 <body>
   <div class="app">
     <header class="shelf-header" id="shelf-header">
-      <div class="brand">
+      <div class="brand" id="brand-home" title="トップへ戻る">
         <h1 class="brand-title">Recipe Shelf</h1>
         <span class="brand-count" id="shelf-count">0 recipes</span>
       </div>
@@ -667,17 +901,27 @@
     </header>
 
     <main class="shelf-main" id="shelf-main">
-      <div class="recipe-grid" id="recipe-grid"></div>
+      <section id="pickup-wrap"></section>
+      <section class="tag-ribbon" id="tag-ribbon"></section>
+      <div>
+        <div class="grid-header">
+          <h2 class="grid-title" id="grid-heading">すべてのレシピ</h2>
+          <span class="grid-sub" id="grid-sub"></span>
+        </div>
+        <div class="recipe-grid" id="recipe-grid" style="margin-top:16px;"></div>
+      </div>
     </main>
 
     <section class="detail-view" id="detail-view">
       <div class="detail-bar">
         <div class="detail-bar-left">
-          <button type="button" class="btn" id="btn-back">← 棚へ戻る</button>
+          <button type="button" class="btn" id="btn-back">← 一覧へ</button>
           <span id="bar-title" style="font-size:13px;font-weight:600;"></span>
         </div>
         <div class="detail-bar-right">
-          <button type="button" class="btn" id="btn-copy-shopping">買い出しリストをコピー</button>
+          <button type="button" class="btn btn-fav" id="btn-detail-fav">☆ お気に入り</button>
+          <button type="button" class="btn" id="btn-copy-link">リンクコピー</button>
+          <button type="button" class="btn" id="btn-copy-shopping">買い出しリスト</button>
         </div>
       </div>
 
@@ -691,6 +935,7 @@
             </div>
             <h2 class="hero-title" id="hero-title"></h2>
             <p class="hero-summary" id="hero-summary"></p>
+            <div class="hero-tags" id="hero-tags"></div>
           </div>
           <div class="hero-art" id="hero-art"></div>
         </header>
@@ -728,9 +973,25 @@
               <ul class="tips-list" id="tips-list"></ul>
               <div class="pairings-row" id="pairings-row"></div>
             </div>
+
+            <div class="memo-box">
+              <div class="sec-head" style="margin-bottom:4px; border-bottom:0; padding-bottom:0;">
+                <h3 class="sec-title" style="font-size:14px;">自分のアレンジメモ</h3>
+                <span class="sec-sub" id="memo-saved-note">自動保存（この端末）</span>
+              </div>
+              <textarea id="recipe-memo" class="memo-input" placeholder="例：次回は醤油を少し控えて、黒こしょう多めにする..."></textarea>
+            </div>
           </section>
         </div>
       </article>
+
+      <section class="related-section" id="related-section" style="display:none;">
+        <div class="grid-header">
+          <h2 class="grid-title">関連するレシピ</h2>
+          <span class="grid-sub">同じ食材・カテゴリから</span>
+        </div>
+        <div class="related-grid" id="related-grid"></div>
+      </section>
     </section>
   </div>
 
@@ -744,17 +1005,22 @@
   <div class="toast" id="toast"></div>
 
   <script>
-    const CAT_ORDER = ['和食', '洋食', '中華', '麺・丼', 'おつまみ', '汁物・副菜'];
+    const CAT_ORDER = ['和食', '洋食', '中華', '麺・丼', 'おつまみ', '汁物・鍋', '汁物・副菜'];
+    const FAV_STORAGE_KEY = 'recipe_shelf_favs_v1';
+    const MEMO_STORAGE_PREFIX = 'recipe_shelf_memo_v1_';
+
     let indexData = { items: [] };
     const itemCache = new Map();
     let activeCat = 'all';
+    let activeTag = '';
     let searchQuery = '';
+    let pickupIdx = 0;
     let currentRecipe = null;
     let currentServings = 2;
     let checkedIngredients = new Set();
     let doneSteps = new Set();
+    let favIds = loadFavs();
 
-    // Timer state
     let timerRemaining = 0;
     let timerRunning = false;
     let timerHandle = null;
@@ -767,6 +1033,35 @@
 
     function esc(s) {
       return String(s || '').replace(/[&<>"']/g, (c) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+    }
+
+    function cleanTags(tags) {
+      return (tags || []).filter((t) => !/^\d+分$/.test(String(t).trim()));
+    }
+
+    function loadFavs() {
+      try {
+        const raw = localStorage.getItem(FAV_STORAGE_KEY);
+        const arr = raw ? JSON.parse(raw) : [];
+        return new Set(Array.isArray(arr) ? arr : []);
+      } catch {
+        return new Set();
+      }
+    }
+
+    function saveFavs() {
+      try { localStorage.setItem(FAV_STORAGE_KEY, JSON.stringify([...favIds])); } catch {}
+    }
+
+    function toggleFav(id) {
+      if (favIds.has(id)) {
+        favIds.delete(id);
+        showToast('お気に入りから外しました');
+      } else {
+        favIds.add(id);
+        showToast('お気に入りに追加しました');
+      }
+      saveFavs();
     }
 
     function showToast(msg) {
@@ -825,13 +1120,9 @@
       const intPart = Math.floor(val);
       const fracPart = Math.round((val - intPart) * 100) / 100;
       let numStr;
-      if (fracPart === 0) {
-        numStr = String(intPart);
-      } else if (fracMap[fracPart]) {
-        numStr = intPart > 0 ? (intPart + 'と' + fracMap[fracPart]) : fracMap[fracPart];
-      } else {
-        numStr = String(Math.round(val * 10) / 10);
-      }
+      if (fracPart === 0) numStr = String(intPart);
+      else if (fracMap[fracPart]) numStr = intPart > 0 ? (intPart + 'と' + fracMap[fracPart]) : fracMap[fracPart];
+      else numStr = String(Math.round(val * 10) / 10);
       const unit = ing.unit || '';
       if (/^(大さじ|小さじ)/.test(unit)) return unit + numStr;
       return numStr + unit;
@@ -839,9 +1130,7 @@
 
     function formatClock(sec) {
       const s = Math.max(0, Math.floor(sec));
-      const m = Math.floor(s / 60);
-      const r = s % 60;
-      return String(m).padStart(2, '0') + ':' + String(r).padStart(2, '0');
+      return String(Math.floor(s / 60)).padStart(2, '0') + ':' + String(s % 60).padStart(2, '0');
     }
 
     function playKitchenBell() {
@@ -860,9 +1149,7 @@
           osc.start(now + i * 0.18);
           osc.stop(now + i * 0.18 + 0.95);
         });
-      } catch {
-        // ignore audio errors
-      }
+      } catch {}
     }
 
     function startTimer(sec, label) {
@@ -890,6 +1177,15 @@
       }, 1000);
     }
 
+    function updateUrlRecipe(id) {
+      try {
+        const u = new URL(window.location.href);
+        if (id) u.searchParams.set('recipe', id);
+        else u.searchParams.delete('recipe');
+        history.replaceState(null, '', u.toString());
+      } catch {}
+    }
+
     function renderCategoryTabs() {
       const catTabs = document.getElementById('cat-tabs');
       const present = new Set((indexData.items || []).map((i) => i.category).filter(Boolean));
@@ -899,30 +1195,105 @@
       ];
       catTabs.innerHTML = [
         `<button type="button" class="tab-btn${activeCat === 'all' ? ' active' : ''}" data-cat="all">すべて</button>`,
+        `<button type="button" class="tab-btn${activeCat === '__fav__' ? ' active' : ''}" data-cat="__fav__">★ お気に入り</button>`,
         ...ordered.map((c) => `<button type="button" class="tab-btn${activeCat === c ? ' active' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`),
       ].join('');
+    }
+
+    function renderTagRibbon() {
+      const ribbon = document.getElementById('tag-ribbon');
+      const counts = new Map();
+      for (const item of (indexData.items || [])) {
+        for (const t of cleanTags(item.tags)) {
+          counts.set(t, (counts.get(t) || 0) + 1);
+        }
+      }
+      const topTags = [...counts.entries()]
+        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'))
+        .slice(0, 12)
+        .map(([t]) => t);
+
+      if (!topTags.length) {
+        ribbon.style.display = 'none';
+        return;
+      }
+      ribbon.style.display = 'flex';
+      ribbon.innerHTML = `<span class="ribbon-label">食材・キーワード:</span>` +
+        topTags.map((t) => `<button type="button" class="filter-chip${activeTag === t ? ' active' : ''}" data-tag="${esc(t)}">${esc(t)}</button>`).join('') +
+        (activeTag ? `<button type="button" class="filter-chip" data-tag="" style="border-style:dashed;">絞り込み解除</button>` : '');
+    }
+
+    function renderPickup() {
+      const wrap = document.getElementById('pickup-wrap');
+      const items = indexData.items || [];
+      if (!items.length || activeCat !== 'all' || activeTag || searchQuery.trim()) {
+        wrap.innerHTML = '';
+        wrap.style.display = 'none';
+        return;
+      }
+      const item = items[pickupIdx % items.length];
+      wrap.style.display = '';
+      wrap.innerHTML = `
+        <article class="pickup-hero" id="pickup-card">
+          <div class="pickup-visual">
+            ${item.image ? `<img src="${esc(item.image)}" alt="${esc(item.title)}" />` : ''}
+          </div>
+          <div class="pickup-body">
+            <div>
+              <div class="pickup-kicker">
+                <span>TODAY'S PICKUP</span>
+                <button type="button" class="btn" id="btn-next-pickup" style="padding:2px 9px;font-size:11px;">別のレシピを見る</button>
+              </div>
+              <h2 class="pickup-title">${esc(item.title)}</h2>
+              <p class="pickup-summary">${esc(item.summary || '')}</p>
+            </div>
+            <div class="pickup-footer">
+              <span class="pickup-meta">${esc(item.category || '')}${item.timeMin ? ' · 調理 ' + item.timeMin + '分' : ''}${item.difficulty ? ' · ' + item.difficulty : ''}</span>
+              <span class="btn btn-accent" style="pointer-events:none;">このレシピを見る →</span>
+            </div>
+          </div>
+        </article>
+      `;
+      document.getElementById('pickup-card').addEventListener('click', () => openDetail(item));
+      document.getElementById('btn-next-pickup').addEventListener('click', (e) => {
+        e.stopPropagation();
+        pickupIdx = (pickupIdx + 1) % items.length;
+        renderPickup();
+      });
     }
 
     function renderGrid() {
       const q = searchQuery.trim().toLowerCase();
       const filtered = (indexData.items || []).filter((item) => {
-        if (activeCat !== 'all' && item.category !== activeCat) return false;
+        if (activeCat === '__fav__' && !favIds.has(item.id)) return false;
+        if (activeCat !== 'all' && activeCat !== '__fav__' && item.category !== activeCat) return false;
+        if (activeTag && !cleanTags(item.tags).includes(activeTag)) return false;
         if (!q) return true;
-        const hay = [item.title, item.category, item.summary, ...(item.tags || [])].join(' ').toLowerCase();
+        const hay = [item.title, item.category, item.summary, ...cleanTags(item.tags)].join(' ').toLowerCase();
         return hay.includes(q);
       });
 
       document.getElementById('shelf-count').textContent = filtered.length + ' / ' + (indexData.items || []).length + ' recipes';
+      const heading = activeCat === '__fav__'
+        ? 'お気に入りのレシピ'
+        : activeTag
+          ? `「${activeTag}」のレシピ`
+          : activeCat !== 'all'
+            ? `${activeCat}のレシピ`
+            : 'すべてのレシピ';
+      document.getElementById('grid-heading').textContent = heading;
+      document.getElementById('grid-sub').textContent = filtered.length + ' 品';
       recipeGrid.innerHTML = '';
 
       if (filtered.length === 0) {
-        recipeGrid.innerHTML = '<div class="empty-state">条件に一致するレシピがありません。チャットや Gemini で studio.item/v1 レシピ JSON を追加すると自動で並びます。</div>';
+        recipeGrid.innerHTML = '<div class="empty-state">条件に一致するレシピがありません。別のキーワードやカテゴリを試してみてください。</div>';
         return;
       }
 
       for (const item of filtered) {
         const card = document.createElement('article');
         card.className = 'recipe-card';
+        const isFav = favIds.has(item.id);
         const svg = item.iconSvg || '<svg width="56" height="56" viewBox="0 0 64 64" fill="none" stroke="#3f523a" stroke-width="1.5"><circle cx="32" cy="36" r="18"/><path d="M18 36h28M24 22c0-4 4-6 4-10M36 22c0-4 4-6 4-10"/></svg>';
         const visualHtml = item.image
           ? `<img class="card-photo" src="${esc(item.image)}" alt="${esc(item.title)}" loading="lazy" />`
@@ -930,18 +1301,39 @@
         card.innerHTML = `
           <div class="card-visual">
             <span class="card-cat">${esc(item.category || 'レシピ')}</span>
-            <span class="card-time">${item.timeMin ? esc(item.timeMin + '分') : ''}</span>
+            <div class="card-top-right">
+              ${item.timeMin ? `<span class="card-time">${esc(item.timeMin + '分')}</span>` : ''}
+              <button type="button" class="card-fav-btn${isFav ? ' is-fav' : ''}" data-fav-id="${esc(item.id)}" title="お気に入り">${isFav ? '★' : '☆'}</button>
+            </div>
             ${visualHtml}
           </div>
           <div class="card-body">
             <h2 class="card-title">${esc(item.title)}</h2>
             <p class="card-summary">${esc(item.summary || '')}</p>
             <div class="card-tags">
-              ${(item.tags || []).filter((t) => !/^\d+分$/.test(String(t).trim())).slice(0, 4).map((t) => `<span class="tag">${esc(t)}</span>`).join('')}
+              ${cleanTags(item.tags).slice(0, 4).map((t) => `<span class="tag" data-card-tag="${esc(t)}">${esc(t)}</span>`).join('')}
             </div>
           </div>
         `;
-        card.addEventListener('click', () => openDetail(item));
+        card.addEventListener('click', (e) => {
+          const favBtn = e.target.closest('[data-fav-id]');
+          if (favBtn) {
+            e.stopPropagation();
+            toggleFav(favBtn.dataset.favId);
+            renderGrid();
+            return;
+          }
+          const tagEl = e.target.closest('[data-card-tag]');
+          if (tagEl) {
+            e.stopPropagation();
+            activeTag = tagEl.dataset.cardTag;
+            renderPickup();
+            renderTagRibbon();
+            renderGrid();
+            return;
+          }
+          openDetail(item);
+        });
         recipeGrid.appendChild(card);
       }
     }
@@ -1028,6 +1420,50 @@
       });
     }
 
+    function renderRelated() {
+      const sec = document.getElementById('related-section');
+      const grid = document.getElementById('related-grid');
+      if (!currentRecipe) { sec.style.display = 'none'; return; }
+      const myTags = new Set(cleanTags(currentRecipe.tags));
+      const candidates = (indexData.items || [])
+        .filter((i) => i.id !== currentRecipe.id)
+        .map((i) => {
+          let score = i.category === currentRecipe.category ? 2 : 0;
+          for (const t of cleanTags(i.tags)) if (myTags.has(t)) score += 3;
+          return { item: i, score };
+        })
+        .sort((a, b) => b.score - a.score)
+        .slice(0, 3)
+        .map((x) => x.item);
+
+      if (!candidates.length) { sec.style.display = 'none'; return; }
+      sec.style.display = '';
+      grid.innerHTML = '';
+      for (const rel of candidates) {
+        const card = document.createElement('article');
+        card.className = 'related-card';
+        card.innerHTML = `
+          <div class="related-thumb">
+            ${rel.image ? `<img src="${esc(rel.image)}" alt="${esc(rel.title)}" loading="lazy" />` : ''}
+          </div>
+          <div class="related-body">
+            <div class="related-meta">${esc(rel.category || '')}${rel.timeMin ? ' · ' + rel.timeMin + '分' : ''}</div>
+            <div class="related-title">${esc(rel.title)}</div>
+          </div>
+        `;
+        card.addEventListener('click', () => openDetail(rel));
+        grid.appendChild(card);
+      }
+    }
+
+    function syncDetailFavBtn() {
+      const btn = document.getElementById('btn-detail-fav');
+      if (!currentRecipe || !btn) return;
+      const isFav = favIds.has(currentRecipe.id);
+      btn.classList.toggle('is-fav', isFav);
+      btn.textContent = isFav ? '★ お気に入り済' : '☆ お気に入り';
+    }
+
     async function openDetail(entry) {
       const detail = await loadRecipeDetail(entry);
       currentRecipe = Object.assign({}, entry, detail);
@@ -1038,6 +1474,7 @@
       shelfHeader.style.display = 'none';
       shelfMain.classList.add('hidden');
       detailView.classList.add('open');
+      updateUrlRecipe(currentRecipe.id);
 
       document.getElementById('bar-title').textContent = currentRecipe.title;
       document.getElementById('hero-cat').textContent = currentRecipe.category || 'レシピ';
@@ -1045,18 +1482,26 @@
       document.getElementById('hero-diff').textContent = currentRecipe.difficulty ? ('難易度 ' + currentRecipe.difficulty) : '';
       document.getElementById('hero-title').textContent = currentRecipe.title;
       document.getElementById('hero-summary').textContent = currentRecipe.summary || '';
+      document.getElementById('hero-tags').innerHTML = cleanTags(currentRecipe.tags)
+        .map((t) => `<span class="tag" data-hero-tag="${esc(t)}">${esc(t)}</span>`).join('');
       document.getElementById('hero-art').innerHTML = currentRecipe.image
         ? `<img class="hero-photo" src="${esc(currentRecipe.image)}" alt="${esc(currentRecipe.title)}" />`
         : (currentRecipe.iconSvg || '');
 
+      syncDetailFavBtn();
       renderIngredients();
       renderSteps();
 
       document.getElementById('tips-list').innerHTML = (currentRecipe.tips || []).map((t) => `<li>${esc(t)}</li>`).join('');
       const pairings = currentRecipe.pairings || [];
       document.getElementById('pairings-row').innerHTML = pairings.length
-        ? '<span>相性の良い副菜・お酒:</span>' + pairings.map((p) => `<span class="tag">${esc(p)}</span>`).join('')
+        ? '<span>相性の良い副菜・お酒:</span>' + pairings.map((p) => `<span class="tag" style="cursor:default;">${esc(p)}</span>`).join('')
         : '';
+
+      const memoEl = document.getElementById('recipe-memo');
+      try { memoEl.value = localStorage.getItem(MEMO_STORAGE_PREFIX + currentRecipe.id) || ''; } catch { memoEl.value = ''; }
+
+      renderRelated();
       window.scrollTo(0, 0);
     }
 
@@ -1065,15 +1510,73 @@
       detailView.classList.remove('open');
       shelfMain.classList.remove('hidden');
       shelfHeader.style.display = '';
+      updateUrlRecipe(null);
+      renderPickup();
+      renderTagRibbon();
+      renderGrid();
     }
 
+    document.getElementById('brand-home').addEventListener('click', () => {
+      activeCat = 'all';
+      activeTag = '';
+      searchQuery = '';
+      document.getElementById('search-input').value = '';
+      renderCategoryTabs();
+      renderPickup();
+      renderTagRibbon();
+      renderGrid();
+    });
+
     document.getElementById('btn-back').addEventListener('click', closeDetail);
+
+    document.getElementById('btn-detail-fav').addEventListener('click', () => {
+      if (!currentRecipe) return;
+      toggleFav(currentRecipe.id);
+      syncDetailFavBtn();
+    });
+
+    document.getElementById('btn-copy-link').addEventListener('click', () => {
+      if (!currentRecipe) return;
+      const u = new URL(window.location.href);
+      u.searchParams.set('recipe', currentRecipe.id);
+      copyText(u.toString(), 'レシピのURL');
+    });
+
+    document.getElementById('hero-tags').addEventListener('click', (e) => {
+      const el = e.target.closest('[data-hero-tag]');
+      if (!el) return;
+      activeTag = el.dataset.heroTag;
+      closeDetail();
+    });
+
+    document.getElementById('recipe-memo').addEventListener('input', (e) => {
+      if (!currentRecipe) return;
+      try {
+        localStorage.setItem(MEMO_STORAGE_PREFIX + currentRecipe.id, e.target.value);
+        document.getElementById('memo-saved-note').textContent = '保存しました';
+        clearTimeout(openDetail._mt);
+        openDetail._mt = setTimeout(() => {
+          document.getElementById('memo-saved-note').textContent = '自動保存（この端末）';
+        }, 1400);
+      } catch {}
+    });
 
     document.getElementById('cat-tabs').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-cat]');
       if (!btn) return;
       activeCat = btn.dataset.cat;
       renderCategoryTabs();
+      renderPickup();
+      renderGrid();
+    });
+
+    document.getElementById('tag-ribbon').addEventListener('click', (e) => {
+      const btn = e.target.closest('[data-tag]');
+      if (!btn) return;
+      const t = btn.dataset.tag;
+      activeTag = activeTag === t ? '' : t;
+      renderPickup();
+      renderTagRibbon();
       renderGrid();
     });
 
@@ -1113,12 +1616,12 @@
         '  "kind": "recipe",',
         '  "id": "YYYYMMDD-english-slug",',
         '  "title": "料理タイトル",',
-        '  "category": "和食 | 洋食 | 中華 | 麺・丼 | おつまみ",',
+        '  "category": "和食 | 洋食 | 中華 | 麺・丼 | おつまみ | 汁物・鍋",',
         '  "summary": "1行の魅力紹介",',
-        '  "tags": ["食材1", "食材2", "時短"],',
-        '  "visibility": "internal",',
+        '  "tags": ["主食材1", "主食材2", "特徴キーワード"],',
+        '  "visibility": "public",',
         '  "updatedAt": "YYYY-MM-DDTHH:mm:ss",',
-        '  "meta": { "timeMin": 15, "difficulty": "初級", "baseServings": 2 },',
+        '  "meta": { "timeMin": 15, "difficulty": "初級", "baseServings": 2, "image": "./images/YYYYMMDD-english-slug.jpg" },',
         '  "payload": {',
         '    "ingredients": [',
         '      { "group": "主材料", "name": "食材名", "amount": 200, "unit": "g" },',
@@ -1151,6 +1654,7 @@
 
     document.getElementById('search-input').addEventListener('input', (e) => {
       searchQuery = e.target.value;
+      renderPickup();
       renderGrid();
     });
 
@@ -1158,8 +1662,21 @@
       try {
         const resp = await fetch('./data.json?t=' + Date.now());
         indexData = await resp.json();
+        const items = indexData.items || [];
+        if (items.length > 0) {
+          const daySeed = Math.floor(Date.now() / 86400000);
+          pickupIdx = daySeed % items.length;
+        }
         renderCategoryTabs();
+        renderPickup();
+        renderTagRibbon();
         renderGrid();
+
+        const targetId = new URLSearchParams(window.location.search).get('recipe');
+        if (targetId) {
+          const found = items.find((i) => i.id === targetId);
+          if (found) openDetail(found);
+        }
       } catch (err) {
         recipeGrid.innerHTML = '<div class="empty-state">data.json の読み込みに失敗しました。</div>';
       }
