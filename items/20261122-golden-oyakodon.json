@@ -3,13 +3,13 @@
   "kind": "recipe",
   "id": "20261122-golden-oyakodon",
   "title": "黄金比のだし香る、ふわとろ親子丼",
-  "category": "和食",
+  "category": "麺・丼",
   "summary": "卵を2回に分けて流し込むだけで、専門店のような半熟とろとろに仕上がる基本の黄金比親子丼。",
   "tags": [
+    "和食",
     "鶏もも肉",
     "卵",
-    "玉ねぎ",
-    "定番"
+    "玉ねぎ"
   ],
   "visibility": "internal",
   "updatedAt": "2026-11-22T20:10:00",

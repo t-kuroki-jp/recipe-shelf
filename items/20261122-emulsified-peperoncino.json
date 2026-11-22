@@ -3,13 +3,13 @@
   "kind": "recipe",
   "id": "20261122-emulsified-peperoncino",
   "title": "失敗しない乳化ペペロンチーノ",
-  "category": "洋食",
+  "category": "麺・丼",
   "summary": "弱火でじっくりにんにくの香りを移し、ゆで汁のデンプンでソースをとろりと乳化させる基本の一皿。",
   "tags": [
+    "洋食",
     "パスタ",
     "にんにく",
-    "唐辛子",
-    "定番"
+    "唐辛子"
   ],
   "visibility": "internal",
   "updatedAt": "2026-11-22T20:10:00",
