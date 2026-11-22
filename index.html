@@ -891,12 +891,10 @@
     <header class="shelf-header" id="shelf-header">
       <div class="brand" id="brand-home" title="トップへ戻る">
         <h1 class="brand-title">Recipe Shelf</h1>
-        <span class="brand-count" id="shelf-count">0 recipes</span>
       </div>
       <div class="controls">
         <div class="tabs" id="cat-tabs" role="tablist"></div>
         <input id="search-input" class="search-input" type="search" placeholder="料理名・食材で検索..." />
-        <button type="button" class="btn" id="btn-copy-gem">Gemini用プロンプト</button>
       </div>
     </header>
 
@@ -1273,7 +1271,6 @@
         return hay.includes(q);
       });
 
-      document.getElementById('shelf-count').textContent = filtered.length + ' / ' + (indexData.items || []).length + ' recipes';
       const heading = activeCat === '__fav__'
         ? 'お気に入りのレシピ'
         : activeTag
@@ -1605,39 +1602,6 @@
         ...(remaining.length ? remaining : ['すべて揃っています']),
       ].join('\n');
       copyText(text, '買い出しリスト');
-    });
-
-    document.getElementById('btn-copy-gem').addEventListener('click', () => {
-      const gemPrompt = [
-        '以下の studio.item/v1 形式の JSON のみをコードブロックで出力してください（Recipe Shelf 用）。',
-        '```json',
-        '{',
-        '  "schema": "studio.item/v1",',
-        '  "kind": "recipe",',
-        '  "id": "YYYYMMDD-english-slug",',
-        '  "title": "料理タイトル",',
-        '  "category": "和食 | 洋食 | 中華 | 麺・丼 | おつまみ | 汁物・鍋",',
-        '  "summary": "1行の魅力紹介",',
-        '  "tags": ["主食材1", "主食材2", "特徴キーワード"],',
-        '  "visibility": "public",',
-        '  "updatedAt": "YYYY-MM-DDTHH:mm:ss",',
-        '  "meta": { "timeMin": 15, "difficulty": "初級", "baseServings": 2, "image": "./images/YYYYMMDD-english-slug.jpg" },',
-        '  "payload": {',
-        '    "ingredients": [',
-        '      { "group": "主材料", "name": "食材名", "amount": 200, "unit": "g" },',
-        '      { "group": "調味料", "name": "醤油", "amount": 2, "unit": "大さじ" },',
-        '      { "group": "調味料", "name": "塩", "text": "少々" }',
-        '    ],',
-        '    "steps": [',
-        '      { "title": "工程見出し", "body": "具体的な手順", "timerSec": 180 }',
-        '    ],',
-        '    "tips": ["失敗しないコツ1", "コツ2"],',
-        '    "pairings": ["合う副菜・お酒"]',
-        '  }',
-        '}',
-        '```',
-      ].join('\n');
-      copyText(gemPrompt, 'Gemini用レシピ出力プロンプト');
     });
 
     document.getElementById('timer-toggle').addEventListener('click', () => {
