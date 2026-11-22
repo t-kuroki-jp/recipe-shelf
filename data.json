@@ -4,6 +4,28 @@
   "items": [
     {
       "timeMin": 15,
+      "difficulty": "初級",
+      "baseServings": 2,
+      "image": "./images/20261122-chicken-semi-dried-tomato-white-wine-steam.jpg",
+      "id": "20261122-chicken-semi-dried-tomato-white-wine-steam",
+      "title": "鶏もも肉とセミドライトマトの白ワイン蒸し（アクアパッツァ風）",
+      "category": "おつまみ",
+      "summary": "セミドライトマトの凝縮された旨みと白ワインの香りが鶏もも肉に絡む、フライパン1つで作れるアクアパッツァ風の一品です。",
+      "tags": [
+        "鶏もも肉",
+        "セミドライトマト",
+        "15分",
+        "フライパン",
+        "おつまみ"
+      ],
+      "visibility": "public",
+      "updatedAt": "2026-11-22T21:46:00",
+      "file": "items/20261122-chicken-semi-dried-tomato-white-wine-steam.json",
+      "schema": "studio.item/v1",
+      "kind": "recipe"
+    },
+    {
+      "timeMin": 15,
       "difficulty": "中級",
       "baseServings": 2,
       "iconSvg": "<svg width=\"60\" height=\"60\" viewBox=\"0 0 64 64\" fill=\"none\" stroke=\"#3f523a\" stroke-width=\"1.5\" stroke-linecap=\"round\"><ellipse cx=\"32\" cy=\"42\" rx=\"22\" ry=\"10\"/><path d=\"M16 38c6-12 26-12 32 0\"/><path d=\"M22 36c4-6 16-6 20 0\" stroke=\"#a64b2a\"/><path d=\"M38 20l8-6\"/></svg>",
