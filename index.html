@@ -871,7 +871,7 @@
       .pickup-body { padding: 18px 16px; }
       .pickup-title { font-size: 19px; }
       .recipe-grid { grid-template-columns: 1fr; }
-      .search-input { width: 100%; }
+      .search-input { width: 170px; flex: 1; min-width: 0; }
       #bar-title { display: none; }
       .book-sheet { width: auto; margin: 12px 12px 24px; }
       .book-hero { grid-template-columns: 1fr; padding: 18px 16px; gap: 14px; }
@@ -893,18 +893,21 @@
         <h1 class="brand-title">Recipe Shelf</h1>
       </div>
       <div class="controls">
-        <div class="tabs" id="cat-tabs" role="tablist"></div>
         <input id="search-input" class="search-input" type="search" placeholder="料理名・食材で検索..." />
+        <button type="button" class="btn btn-fav" id="btn-header-fav" title="お気に入りのみ表示">☆ お気に入り</button>
       </div>
     </header>
 
     <main class="shelf-main" id="shelf-main">
       <section id="pickup-wrap"></section>
-      <section class="tag-ribbon" id="tag-ribbon"></section>
       <div>
-        <div class="grid-header">
-          <h2 class="grid-title" id="grid-heading">すべてのレシピ</h2>
-          <span class="grid-sub" id="grid-sub"></span>
+        <div class="grid-header" style="flex-wrap:wrap; align-items:center;">
+          <div style="display:flex; align-items:center; gap:12px; flex-wrap:wrap;">
+            <h2 class="grid-title" id="grid-heading">すべてのレシピ</h2>
+            <span class="grid-sub" id="grid-sub"></span>
+            <span id="active-tag-pill"></span>
+          </div>
+          <div class="tabs" id="cat-tabs" role="tablist"></div>
         </div>
         <div class="recipe-grid" id="recipe-grid" style="margin-top:16px;"></div>
       </div>
@@ -1193,32 +1196,31 @@
       ];
       catTabs.innerHTML = [
         `<button type="button" class="tab-btn${activeCat === 'all' ? ' active' : ''}" data-cat="all">すべて</button>`,
-        `<button type="button" class="tab-btn${activeCat === '__fav__' ? ' active' : ''}" data-cat="__fav__">★ お気に入り</button>`,
         ...ordered.map((c) => `<button type="button" class="tab-btn${activeCat === c ? ' active' : ''}" data-cat="${esc(c)}">${esc(c)}</button>`),
       ].join('');
+      const favBtn = document.getElementById('btn-header-fav');
+      if (favBtn) {
+        const isFavMode = activeCat === '__fav__';
+        favBtn.classList.toggle('is-fav', isFavMode);
+        favBtn.textContent = isFavMode ? '★ お気に入り' : '☆ お気に入り';
+      }
     }
 
     function renderTagRibbon() {
-      const ribbon = document.getElementById('tag-ribbon');
-      const counts = new Map();
-      for (const item of (indexData.items || [])) {
-        for (const t of cleanTags(item.tags)) {
-          counts.set(t, (counts.get(t) || 0) + 1);
-        }
+      const pill = document.getElementById('active-tag-pill');
+      if (!pill) return;
+      pill.innerHTML = activeTag
+        ? `<button type="button" class="filter-chip active" id="btn-clear-tag">${esc(activeTag)} ×</button>`
+        : '';
+      const clearBtn = document.getElementById('btn-clear-tag');
+      if (clearBtn) {
+        clearBtn.addEventListener('click', () => {
+          activeTag = '';
+          renderPickup();
+          renderTagRibbon();
+          renderGrid();
+        });
       }
-      const topTags = [...counts.entries()]
-        .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0], 'ja'))
-        .slice(0, 12)
-        .map(([t]) => t);
-
-      if (!topTags.length) {
-        ribbon.style.display = 'none';
-        return;
-      }
-      ribbon.style.display = 'flex';
-      ribbon.innerHTML = `<span class="ribbon-label">食材・キーワード:</span>` +
-        topTags.map((t) => `<button type="button" class="filter-chip${activeTag === t ? ' active' : ''}" data-tag="${esc(t)}">${esc(t)}</button>`).join('') +
-        (activeTag ? `<button type="button" class="filter-chip" data-tag="" style="border-style:dashed;">絞り込み解除</button>` : '');
     }
 
     function renderPickup() {
@@ -1558,22 +1560,19 @@
       } catch {}
     });
 
+    document.getElementById('btn-header-fav').addEventListener('click', () => {
+      activeCat = activeCat === '__fav__' ? 'all' : '__fav__';
+      renderCategoryTabs();
+      renderPickup();
+      renderGrid();
+    });
+
     document.getElementById('cat-tabs').addEventListener('click', (e) => {
       const btn = e.target.closest('[data-cat]');
       if (!btn) return;
       activeCat = btn.dataset.cat;
       renderCategoryTabs();
       renderPickup();
-      renderGrid();
-    });
-
-    document.getElementById('tag-ribbon').addEventListener('click', (e) => {
-      const btn = e.target.closest('[data-tag]');
-      if (!btn) return;
-      const t = btn.dataset.tag;
-      activeTag = activeTag === t ? '' : t;
-      renderPickup();
-      renderTagRibbon();
       renderGrid();
     });
 
