@@ -1,6 +1,6 @@
 # Recipe Shelf
 
-AI Team Studio の共通封筒フォーマット（`studio.item/v1`, `kind: "recipe"`）で管理する私設レシピブックです。
+人数換算・買い出しチェック・手順内蔵タイマーを備えたシンプルなレシピブックです。
 
-- **公開 URL**: https://t-kuroki-jp.github.io/recipe-shelf/
-- **自動公開**: `items/<YYYYMMDD-slug>.json`（および `images/<YYYYMMDD-slug>.jpg`）を追加して `main` へ push すると、GitHub Actions が自動で `data.json` を生成して GitHub Pages へデプロイします。
+- **URL**: https://t-kuroki-jp.github.io/recipe-shelf/
+- **更新方法**: `items/<YYYYMMDD-slug>.json`（および `images/<YYYYMMDD-slug>.jpg`）を追加して `main` へ push すると、GitHub Actions が自動で `data.json` を生成して公開します。
